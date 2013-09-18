@@ -1,7 +1,0 @@
-<RCC>
-    <qresource prefix="/IM">
-        <file alias="main.qml">qml/main.qml</file>
-        <file alias="Button.qml">qml/Button.qml</file>
-        <file alias="SendMessage.qml">qml/SendMessage.qml</file>
-    </qresource>
-</RCC>

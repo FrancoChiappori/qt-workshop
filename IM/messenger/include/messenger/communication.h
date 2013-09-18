@@ -20,6 +20,7 @@ public:
     Communication(IUdpSocket & udp_socket);
 
 public slots:
+    void handle_send_keep_alive(QString const & nickname);
     void handle_send_message(QString const & nickname, QString const & message);
 
 

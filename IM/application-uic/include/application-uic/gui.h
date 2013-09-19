@@ -14,6 +14,11 @@ public:
     Gui(Ui::ImForm & form);
 
     QString getNickname();
+
+
+public slots:
+    void on_addChatItem(const QString & nickname, QString const & message);
+
 private slots:
     void on_SendMessage_clicked();
     void on_Nickname_returnPressed();

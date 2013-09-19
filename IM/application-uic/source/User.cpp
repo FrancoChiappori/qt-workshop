@@ -1,22 +1,26 @@
 #include <application-uic/User.h>
-#include <QTimer>
 
 namespace IM {
 
-User::User(const QString & nickname, QTimer * timer)
+User::User(const QString & nickname)
     : nickname(nickname)
-    , timer(timer)
-{}
-
-void User::keep_alive()
 {
-    if (timer)
-        timer->start();
+    keep_alive();
 }
 
-const QString & User::getNickname() const
+void User::keep_alive(const QDateTime & now)
+{
+    last_time = now;
+}
+
+const QString & User::get_nickname() const
 {
     return nickname;
+}
+
+bool User::is_expired(const QDateTime & reference_time) const
+{
+    return last_time < reference_time;
 }
 
 }

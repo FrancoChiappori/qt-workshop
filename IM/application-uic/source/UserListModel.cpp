@@ -1,17 +1,25 @@
 #include "application-uic/UserListModel.h"
 #include <algorithm>
+#include <QTimer>
 
 namespace IM {
 
 UserListModel::UserListModel(QObject * parent)
     : QAbstractListModel(parent)
-{}
+    , timer(nullptr)
+{
+    timer = new QTimer(this);
+    connect(timer, SIGNAL(timeout()), this, SLOT(check_user_timeout()));
+    timer->setSingleShot(false);
+    timer->setTimerType(Qt::PreciseTimer);
+    timer->start(1000);
+}
 
 int UserListModel::rowCount(const QModelIndex & parent) const
 {
     Q_UNUSED(parent);
 
-    return users.size() + 1;
+    return users.size();
 }
 
 QVariant UserListModel::data(const QModelIndex & index, int role) const
@@ -25,11 +33,8 @@ QVariant UserListModel::data(const QModelIndex & index, int role) const
 
     switch (role) {
         case Qt::DisplayRole:
-            if (row < users.size()) {
-                return users.at(row)->getNickname();
-            } else if (row == users.size()) {
-                return "Me";
-            }
+            if (row < users.size())
+                return users.at(row).get_nickname();
             break;
 
         default:
@@ -43,26 +48,41 @@ void UserListModel::received_keep_alive(const QString & nickname)
 {
     using namespace std;
 
-    Q_UNUSED(nickname);
+    if (nickname.isEmpty())
+        return;
 
-    auto i = find_if(begin(users), end(users), [nickname](const User * user)
+    auto i = find_if(begin(users), end(users), [nickname](const User & user)
     {
-        return nickname == user->getNickname();
+        return nickname == user.get_nickname();
     });
 
     if (i == end(users)) {
-        add_new_user(nickname);
+        beginInsertRows(QModelIndex(), users.size()-1, users.size());
+        users.push_back(User(nickname));
+        endInsertRows();
     } else {
-        (*i)->keep_alive();
+        i->keep_alive();
     }
 }
 
-void UserListModel::add_new_user(const QString & nickname)
+void UserListModel::check_user_timeout()
 {
-    Q_UNUSED(nickname);
+    using namespace std;
 
-    // TODO: implementation
+    QDateTime now = QDateTime::currentDateTime().addSecs(-7);
+
+    for (;;) {
+        auto i = find_if(begin(users), end(users), [now](const User & user)
+        {
+            return user.is_expired(now);
+        });
+        if (i == end(users))
+            return;
+
+        beginRemoveRows(QModelIndex(), i - begin(users), i - begin(users) + 1);
+        users.erase(i);
+        endRemoveRows();
+    }
 }
-
 
 }

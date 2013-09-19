@@ -5,6 +5,8 @@
 #include <vector>
 #include <application-uic/User.h>
 
+class QTimer;
+
 namespace IM {
 
 class UserListModel : public QAbstractListModel
@@ -18,11 +20,11 @@ public:
 
 public slots:
     void received_keep_alive(const QString & nickname);
+    void check_user_timeout();
 
 private:
-    void add_new_user(const QString &);
-
-    std::vector<User *> users;
+    std::vector<User> users;
+    QTimer * timer;
 };
 
 }

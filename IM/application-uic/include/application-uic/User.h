@@ -2,24 +2,23 @@
 #define USER_H
 
 #include <QString>
-
-class QTimer;
+#include <QDateTime>
 
 namespace IM {
 
 class User
 {
 public:
-    User(const QString &, QTimer * = nullptr);
+    User(const QString &);
 
-    void keep_alive();
-    const QString & getNickname() const;
+    void keep_alive(const QDateTime & now = QDateTime::currentDateTime());
+    const QString & get_nickname() const;
+    bool is_expired(const QDateTime &) const;
 
 private:
     QString nickname;
-    QTimer * timer;
+    QDateTime last_time;
 };
-
 
 }
 

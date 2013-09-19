@@ -13,11 +13,10 @@ class Controller : public QObject
 public:
     Controller();
 
-    void set_nickname(const QString & nickname);
-
 public slots:
     void invoke_send_message(const QString & message);
     void invoke_send_keepalive();
+    void set_nickname(const QString & nickname);
 
 signals:
     void send_message(const QString & nickname, QString const & message);

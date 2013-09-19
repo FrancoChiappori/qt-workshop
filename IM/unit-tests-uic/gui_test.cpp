@@ -16,6 +16,9 @@ void GuiTest::clicking_the_SendMessage_signals_send_message_with_the_message_fro
 
     QString const expected_message = "Hello world.";
     im_form.MessageInput->setText(expected_message);
+    im_form.Nickname->setText("Nickname");
+    QTest::keyPress(im_form.Nickname, Qt::Key_Enter);
+    QTest::keyRelease(im_form.Nickname, Qt::Key_Enter);
 
     // act
     QTest::mouseClick(im_form.SendMessage, Qt::LeftButton);
@@ -55,10 +58,12 @@ void GuiTest::clicking_the_SendMessage_clears_the_input_field_is_empty()
 
     QString const expected_message = "Hello world.";
     im_form.MessageInput->setText(expected_message);
+    im_form.Nickname->setText("Nickname");
+    QTest::keyPress(im_form.Nickname, Qt::Key_Enter);
+    QTest::keyRelease(im_form.Nickname, Qt::Key_Enter);
 
     // act
     QTest::mouseClick(im_form.SendMessage, Qt::LeftButton);
-
     // assert
     QVERIFY(im_form.MessageInput->text().isEmpty());
 }

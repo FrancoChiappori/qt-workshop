@@ -26,6 +26,7 @@ int Application::execute(int argc, char * argv[])
     UdpSocket udpSocket;
     Communication communication(udpSocket);
     communication.connect(&controller, SIGNAL(send_message(const QString &, const QString &)), SLOT(handle_send_message(const QString &, const QString &)));
+    communication.connect(&controller, SIGNAL(send_keepalive(QString const &)), SLOT(handle_send_keep_alive(QString const &)));
 
     // gui
 

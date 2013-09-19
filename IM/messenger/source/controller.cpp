@@ -9,7 +9,7 @@ Controller::Controller()
     , timerKeepAlive(nullptr)
 {
     timerKeepAlive = new QTimer(this);
-    connect(timerKeepAlive, SIGNAL(timeout()), this, SLOT(timeoutKeepAlive()));
+    connect(timerKeepAlive, SIGNAL(timeout()), this, SLOT(invoke_send_keepalive()));
     timerKeepAlive->setSingleShot(false);
     timerKeepAlive->setTimerType(Qt::PreciseTimer);
     timerKeepAlive->start(5000);
@@ -23,14 +23,15 @@ void Controller::invoke_send_message(const QString & message)
     emit send_message(_nickname, message);
 }
 
+void Controller::invoke_send_keepalive()
+{
+    if (!_nickname.isEmpty())
+        emit send_keepalive(_nickname);
+}
+
 void Controller::set_nickname(const QString & nickname)
 {
     _nickname = nickname;
-}
-
-void Controller::timeoutKeepAlive()
-{
-    // TODO: implementation of timer timeouts
 }
 
 } // IM

@@ -12,9 +12,7 @@ class Gui : public QWidget {
 
 public:
     Gui(Ui::ImForm & form);
-
-    QString getNickname();
-
+    //QString getNickname();
 
 public slots:
     void on_addChatItem(const QString & nickname, QString const & message);
@@ -22,6 +20,7 @@ public slots:
 private slots:
     void on_SendMessage_clicked();
     void on_Nickname_returnPressed();
+    void on_MessageInput_returnPressed();
 
 signals:
     void send_message(QString const & message);

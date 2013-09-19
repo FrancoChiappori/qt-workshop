@@ -25,6 +25,7 @@ private slots:
 
 signals:
     void send_message(QString const & message);
+    void notify_nickname(QString const & nickname);
 
 private:
     Ui::ImForm & _im_form;

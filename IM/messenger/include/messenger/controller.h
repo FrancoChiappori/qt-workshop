@@ -3,6 +3,8 @@
 
 #include <QtCore/QObject>
 
+class QTimer;
+
 namespace IM {
 
 class Controller : public QObject
@@ -20,7 +22,13 @@ signals:
     void send_message(const QString & nickname, QString const & message);
 
 private:
+    void setupTimer();
+
     QString _nickname;
+    QTimer * timerKeepAlive;
+
+private slots:
+    void timeoutKeepAlive();
 };
 
 } // IM

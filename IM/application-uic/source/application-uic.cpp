@@ -21,17 +21,22 @@ int Application::execute(int argc, char * argv[])
 
     Controller controller;
 
+    // communication
+
     UdpSocket udpSocket;
     Communication communication(udpSocket);
     communication.connect(&controller, SIGNAL(send_message(const QString &, const QString &)), SLOT(handle_send_message(const QString &, const QString &)));
+
+    // gui
 
     Ui::ImForm im_form;
     Gui gui(im_form);
 
     controller.connect(&gui, SIGNAL(send_message(QString const &)), SLOT(invoke_send_message(QString const &)));
 
-    gui.show();
+    // run
 
+    gui.show();
     return application.exec();
 }
 

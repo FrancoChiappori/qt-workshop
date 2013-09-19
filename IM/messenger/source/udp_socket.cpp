@@ -7,9 +7,26 @@ UdpSocket::UdpSocket() :
 {
 }
 
+bool UdpSocket::bind(quint16 port, QAbstractSocket::BindMode mode)
+{
+    return _udp_socket.bind(port, mode);
+}
+
+qint64 UdpSocket::readDatagram(QByteArray & datagram)
+{
+    datagram.resize(_udp_socket.pendingDatagramSize());
+    return _udp_socket.readDatagram(datagram.data(), datagram.size());
+}
+
+
 qint64 UdpSocket::writeDatagram(const QByteArray & datagram, const QHostAddress & host, quint16 port)
 {
     return _udp_socket.writeDatagram(datagram, host, port);
+}
+
+QAbstractSocket const * UdpSocket::get_QSocket()
+{
+    return &_udp_socket;
 }
 
 } // IM

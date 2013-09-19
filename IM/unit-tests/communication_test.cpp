@@ -100,3 +100,7 @@ void CommunicationTest::receiving_keep_alive_on_udp_emits_proper_signal()
     QString nickname = arguments.at(0).toString();
     QCOMPARE(nickname, expected_nickname);
 }
+
+void CommunicationTest::receiving_message_on_udp_emits_proper_signal()
+{
+}

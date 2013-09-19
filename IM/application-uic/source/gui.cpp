@@ -14,7 +14,7 @@ Gui::Gui(Ui::ImForm & im_form) :
 
 void Gui::on_SendMessage_clicked()
 {
-    if(!_im_form.MessageInput->text().isEmpty())
+    if(!_im_form.MessageInput->text().isEmpty() && !m_nickname.isEmpty())
     {
         emit send_message(_im_form.MessageInput->text());
         _im_form.MessageInput->clear();
@@ -27,9 +27,9 @@ void Gui::on_Nickname_returnPressed()
     emit notify_nickname(m_nickname);
 }
 
-QString Gui::getNickname()
+void Gui::on_MessageInput_returnPressed()
 {
-    return m_nickname;
+  on_SendMessage_clicked();
 }
 
 void Gui::on_addChatItem(const QString & nickname, QString const & message)

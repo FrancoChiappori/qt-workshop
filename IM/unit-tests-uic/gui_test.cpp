@@ -6,7 +6,7 @@
 
 #include "gui_test.h"
 
-void GuiTest::clicking_the_send_button_signals_send_message_with_the_message_from_the_input_field()
+void GuiTest::clicking_the_SendMessage_signals_send_message_with_the_message_from_the_input_field()
 {
     // arrange
     Ui::ImForm im_form;
@@ -15,10 +15,10 @@ void GuiTest::clicking_the_send_button_signals_send_message_with_the_message_fro
     QSignalSpy signal_spy(&testee, SIGNAL(send_message(QString const &)));
 
     QString const expected_message = "Hello world.";
-    im_form.message_input->setText(expected_message);
+    im_form.MessageInput->setText(expected_message);
 
     // act
-    QTest::mouseClick(im_form.send_button, Qt::LeftButton);
+    QTest::mouseClick(im_form.SendMessage, Qt::LeftButton);
 
     // assert
     QCOMPARE(signal_spy.count(), 1);
@@ -28,7 +28,7 @@ void GuiTest::clicking_the_send_button_signals_send_message_with_the_message_fro
     QCOMPARE(arguments.at(0).toString(), expected_message);
 }
 
-void GuiTest::clicking_the_send_button_does_not_signal_send_message_when_the_input_field_is_empty()
+void GuiTest::clicking_the_SendMessage_does_not_signal_send_message_when_the_input_field_is_empty()
 {
     // arrange
     Ui::ImForm im_form;
@@ -36,16 +36,16 @@ void GuiTest::clicking_the_send_button_does_not_signal_send_message_when_the_inp
 
     QSignalSpy signal_spy(&testee, SIGNAL(send_message(QString const &)));
 
-    im_form.message_input->clear();
+    im_form.MessageInput->clear();
 
     // act
-    QTest::mouseClick(im_form.send_button, Qt::LeftButton);
+    QTest::mouseClick(im_form.SendMessage, Qt::LeftButton);
 
     // assert
     QCOMPARE(signal_spy.count(), 0);
 }
 
-void GuiTest::clicking_the_send_button_clears_the_input_field_is_empty()
+void GuiTest::clicking_the_SendMessage_clears_the_input_field_is_empty()
 {
     // arrange
     Ui::ImForm im_form;
@@ -54,11 +54,11 @@ void GuiTest::clicking_the_send_button_clears_the_input_field_is_empty()
     QSignalSpy signal_spy(&testee, SIGNAL(send_message(QString const &)));
 
     QString const expected_message = "Hello world.";
-    im_form.message_input->setText(expected_message);
+    im_form.MessageInput->setText(expected_message);
 
     // act
-    QTest::mouseClick(im_form.send_button, Qt::LeftButton);
+    QTest::mouseClick(im_form.SendMessage, Qt::LeftButton);
 
     // assert
-    QVERIFY(im_form.message_input->text().isEmpty());
+    QVERIFY(im_form.MessageInput->text().isEmpty());
 }

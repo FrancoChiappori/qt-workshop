@@ -13,14 +13,18 @@ class Gui : public QWidget {
 public:
     Gui(Ui::ImForm & form);
 
+    QString getNickname();
 private slots:
-    void on_send_button_clicked();
+    void on_SendMessage_clicked();
+    void on_Nickname_returnPressed();
 
 signals:
     void send_message(QString const & message);
 
 private:
     Ui::ImForm & _im_form;
+
+    QString m_nickname;
 };
 
 } // IM

@@ -11,13 +11,24 @@ Gui::Gui(Ui::ImForm & im_form) :
     _im_form.setupUi(this);
 }
 
-void Gui::on_send_button_clicked()
+void Gui::on_SendMessage_clicked()
 {
-    if(!_im_form.message_input->text().isEmpty()) {
-        emit send_message(_im_form.message_input->text());
-        _im_form.message_input->clear();
+    if(!_im_form.MessageInput->text().isEmpty()) {
+        emit send_message(_im_form.MessageInput->text());
+        _im_form.MessageInput->clear();
     }
 }
+
+    void Gui::on_Nickname_returnPressed()
+    {
+        m_nickname =_im_form.Nickname->text();
+    }
+
+    QString Gui::getNickname()
+    {
+        return m_nickname;
+    }
+
 
 } // IM
 

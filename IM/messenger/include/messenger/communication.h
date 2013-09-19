@@ -3,6 +3,8 @@
 
 #include <QtCore/QObject>
 
+class QHostAddress;
+
 namespace IM {
 
 class IUdpSocket;
@@ -20,14 +22,16 @@ public:
     Communication(IUdpSocket & udp_socket);
 
 public slots:
-    void handle_send_keep_alive(QString const & nickname);
-    void handle_send_message(QString const & nickname, QString const & message);
+    void handle_send_keep_alive(const QString & nickname);
+    void handle_send_message(const QString & nickname, const QString & message);
+    void handle_send_host_event(const QString & nickname, const QString & event);
 
     void receive_incoming_datagram();
 
 signals:
     void received_keep_alive(const QString & nickname);
-    void received_message(const QString & nickname, QString const & message);
+    void received_message(const QString & nickname, const QString  & message);
+    void received_host_event(const QString & nickname, QString const & event, const QHostAddress & host);
 
 private:
     IUdpSocket & _udp_socket;

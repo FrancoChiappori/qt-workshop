@@ -12,7 +12,7 @@ Controller::Controller()
     connect(timerKeepAlive, SIGNAL(timeout()), this, SLOT(invoke_send_keepalive()));
     timerKeepAlive->setSingleShot(false);
     timerKeepAlive->setTimerType(Qt::PreciseTimer);
-    timerKeepAlive->start(5000);
+    timerKeepAlive->setInterval(5000);
 }
 
 void Controller::setupTimer()
@@ -32,6 +32,8 @@ void Controller::invoke_send_keepalive()
 void Controller::set_nickname(const QString & nickname)
 {
     _nickname = nickname;
+    timerKeepAlive->start();
+    invoke_send_keepalive();
 }
 
 } // IM

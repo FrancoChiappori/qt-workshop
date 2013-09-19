@@ -183,41 +183,36 @@
        <widget class="QTreeWidget" name="treeWidget">
         <column>
          <property name="text">
-          <string>1</string>
+          <string>Participant</string>
          </property>
         </column>
         <item>
          <property name="text">
-          <string>New Item</string>
-         </property>
-        </item>
-        <item>
-         <property name="text">
-          <string>New Item</string>
+          <string>Mario</string>
          </property>
          <item>
           <property name="text">
-           <string>ssdsdsd</string>
+           <string>Töggelä</string>
           </property>
-          <item>
-           <property name="text">
-            <string>sa</string>
-           </property>
-           <item>
-            <property name="text">
-             <string>dsadd</string>
-            </property>
-           </item>
-          </item>
          </item>
         </item>
         <item>
          <property name="text">
-          <string>New Item</string>
+          <string>Franco</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Alain</string>
          </property>
          <item>
           <property name="text">
-           <string>sadasdasd</string>
+           <string>qt Workshop</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>Bier</string>
           </property>
          </item>
         </item>

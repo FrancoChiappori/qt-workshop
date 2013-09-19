@@ -15,6 +15,18 @@ Communication::Communication(IUdpSocket & udp_socket) :
 {
 }
 
+void Communication::handle_send_keep_alive(QString const & nickname)
+{
+    QByteArray data;
+    QDataStream stream(&data, QIODevice::WriteOnly);
+    stream.setVersion(QDataStream::Qt_5_0);
+
+    stream << Command::KeepAlive;
+    stream << nickname;
+
+    _udp_socket.writeDatagram(data, QHostAddress::Broadcast, _port);
+}
+
 void Communication::handle_send_message(const QString & nickname, const QString & message)
 {
     QByteArray data;

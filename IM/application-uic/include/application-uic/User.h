@@ -3,17 +3,21 @@
 
 #include <QString>
 
+class QTimer;
+
 namespace IM {
 
 class User
 {
 public:
-    User(const QString &);
+    User(const QString &, QTimer * = nullptr);
 
     void keep_alive();
+    const QString & getNickname() const;
 
 private:
     QString nickname;
+    QTimer * timer;
 };
 
 

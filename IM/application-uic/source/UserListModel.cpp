@@ -1,4 +1,5 @@
 #include "application-uic/UserListModel.h"
+#include <algorithm>
 
 namespace IM {
 
@@ -10,22 +11,58 @@ int UserListModel::rowCount(const QModelIndex & parent) const
 {
     Q_UNUSED(parent);
 
-    return users.size();
+    return users.size() + 1;
 }
 
 QVariant UserListModel::data(const QModelIndex & index, int role) const
 {
-    Q_UNUSED(index);
-    Q_UNUSED(role);
+    if (!index.isValid())
+        return QVariant();
+    if (index.row() < 0)
+        return QVariant();
 
-    return QVariant(); // TODO: implementation
+    size_t row = static_cast<size_t>(index.row());
+
+    switch (role) {
+        case Qt::DisplayRole:
+            if (row < users.size()) {
+                return users.at(row)->getNickname();
+            } else if (row == users.size()) {
+                return "Me";
+            }
+            break;
+
+        default:
+            break;
+    }
+
+    return QVariant();
 }
 
 void UserListModel::received_keep_alive(const QString & nickname)
+{
+    using namespace std;
+
+    Q_UNUSED(nickname);
+
+    auto i = find_if(begin(users), end(users), [nickname](const User * user)
+    {
+        return nickname == user->getNickname();
+    });
+
+    if (i == end(users)) {
+        add_new_user(nickname);
+    } else {
+        (*i)->keep_alive();
+    }
+}
+
+void UserListModel::add_new_user(const QString & nickname)
 {
     Q_UNUSED(nickname);
 
     // TODO: implementation
 }
+
 
 }

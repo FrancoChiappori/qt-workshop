@@ -20,6 +20,8 @@ public slots:
     void received_keep_alive(const QString & nickname);
 
 private:
+    void add_new_user(const QString &);
+
     std::vector<User *> users;
 };
 

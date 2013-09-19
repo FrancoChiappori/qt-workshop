@@ -6,18 +6,21 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>371</width>
-    <height>51</height>
+    <width>675</width>
+    <height>512</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>Form</string>
   </property>
+  <property name="autoFillBackground">
+   <bool>false</bool>
+  </property>
   <widget class="QWidget" name="horizontalLayoutWidget">
    <property name="geometry">
     <rect>
-     <x>0</x>
-     <y>0</y>
+     <x>280</x>
+     <y>450</y>
      <width>371</width>
      <height>51</height>
     </rect>
@@ -34,6 +37,26 @@
      </widget>
     </item>
    </layout>
+  </widget>
+  <widget class="QListView" name="chatMsgView">
+   <property name="geometry">
+    <rect>
+     <x>280</x>
+     <y>10</y>
+     <width>371</width>
+     <height>431</height>
+    </rect>
+   </property>
+  </widget>
+  <widget class="QTreeView" name="treeView">
+   <property name="geometry">
+    <rect>
+     <x>10</x>
+     <y>10</y>
+     <width>256</width>
+     <height>491</height>
+    </rect>
+   </property>
   </widget>
  </widget>
  <resources/>

@@ -9,6 +9,7 @@ namespace IM {
 
 quint32 const Command::KeepAlive = 0;
 quint32 const Command::Message = 1;
+quint32 const Command::HostEvent = 2;
 
 Communication::Communication(IUdpSocket & udp_socket) :
     _udp_socket(udp_socket),
@@ -23,10 +24,8 @@ void Communication::handle_send_keep_alive(const QString & nickname)
 {
     QByteArray data;
     QDataStream stream(&data, QIODevice::WriteOnly);
-    stream.setVersion(QDataStream::Qt_5_0);
 
-    stream << Command::KeepAlive;
-    stream << nickname;
+    setup_datagram(stream, Command::KeepAlive, nickname);
 
     _udp_socket.writeDatagram(data, QHostAddress::Broadcast, _port);
 }
@@ -35,23 +34,29 @@ void Communication::handle_send_message(const QString & nickname, const QString 
 {
     QByteArray data;
     QDataStream stream(&data, QIODevice::WriteOnly);
-    stream.setVersion(QDataStream::Qt_5_0);
 
-    stream << Command::Message;
-    stream << nickname;
+    setup_datagram(stream, Command::Message, nickname);
     stream << message;
 
     _udp_socket.writeDatagram(data, QHostAddress::Broadcast, _port);
 }
 
-void Communication::handle_send_host_event(const QString &, const QString &)
+void Communication::handle_send_host_event(const QString & nickname, const QString & event)
 {
+    QByteArray data;
+    QDataStream stream(&data, QIODevice::WriteOnly);
+
+    setup_datagram(stream, Command::HostEvent, nickname);
+    stream << event;
+
+    _udp_socket.writeDatagram(data, QHostAddress::Broadcast, _port);
 }
 
 void Communication::receive_incoming_datagram()
 {
     QByteArray data;
-    _udp_socket.readDatagram(data);
+    QHostAddress sender;
+    _udp_socket.readDatagram(data, &sender);
     QDataStream stream(data);
 
     quint32 command;
@@ -68,7 +73,21 @@ void Communication::receive_incoming_datagram()
         emit received_message(nickname, message);
         break;
     }
+    case Command::HostEvent: {
+        QString event;
+        stream >> event;
+        emit received_host_event(nickname, event, sender);
+        break;
     }
+    }
+}
+
+void Communication::setup_datagram(QDataStream & stream, quint32 command, const QString & nickname)
+{
+    stream.setVersion(QDataStream::Qt_5_0);
+
+    stream << command;
+    stream << nickname;
 }
 
 } // IM

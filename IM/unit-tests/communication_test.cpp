@@ -75,6 +75,42 @@ void CommunicationTest::handle_send_message_broadcasts_the_message_over_udp()
     QCOMPARE(arguments.at(2).toUInt(), expected_port);
 }
 
+void CommunicationTest::handle_send_host_event_broadcasts_the_message_over_udp()
+{
+    // arrange
+    qRegisterMetaType<QHostAddress>("QHostAddress");
+    QUdpSocketMock udp_socket;
+    QSignalSpy writeDatagram(&udp_socket, SIGNAL(called_writeDatagram(QByteArray const &, QHostAddress const &, quint16)));
+
+    // act
+    IM::Communication testee(udp_socket);
+    const QString expected_nickname = "Donald Duck";
+    const QString expected_event = "Phantomias Party";
+    testee.handle_send_host_event(expected_nickname, expected_event);
+
+    // assert
+    QCOMPARE(writeDatagram.count(), 1);
+
+    const auto arguments = writeDatagram.takeFirst();
+    QDataStream data(arguments.at(0).toByteArray());
+
+    quint32 command;
+    QString nickname;
+    QString event;
+    data >> command >> nickname >> event;
+
+    const quint32 expected_command = IM::Command::HostEvent;
+    QCOMPARE(command, expected_command);
+    QCOMPARE(nickname, expected_nickname);
+    QCOMPARE(event, expected_event);
+
+    const QHostAddress expected_address = QHostAddress::Broadcast;
+    QCOMPARE(qvariant_cast<QHostAddress>(arguments.at(1)), expected_address);
+
+    const quint32 expected_port = 41000;
+    QCOMPARE(arguments.at(2).toUInt(), expected_port);
+}
+
 void CommunicationTest::receiving_keep_alive_on_udp_emits_proper_signal()
 {
     // arrange
@@ -129,4 +165,36 @@ void CommunicationTest::receiving_message_on_udp_emits_proper_signal()
     QString message = arguments.at(1).toString();
     QCOMPARE(nickname, expected_nickname);
     QCOMPARE(message, expected_message);
+}
+
+void CommunicationTest::receiving_host_event_on_udp_emits_proper_signal()
+{
+    // arrange
+    QUdpSocketMock udp_socket;
+    IM::Communication testee(udp_socket);
+    const QString expected_nickname = "Harry Potter";
+    const QString expected_event = "Quidditch";
+    const QHostAddress expected_sender("192.168.42.19");
+
+    QByteArray data;
+    QDataStream stream(&data, QIODevice::WriteOnly);
+    stream.setVersion(QDataStream::Qt_5_0);
+    stream << IM::Command::HostEvent;
+    stream << expected_nickname;
+    stream << expected_event;
+    udp_socket.setDataToReceive(data, &expected_sender);
+
+    QSignalSpy receiveHostEvent(&testee, SIGNAL(received_host_event(const QString &, QString const &, const QHostAddress &)));
+
+    // act
+    testee.receive_incoming_datagram();
+
+    // assert
+    QCOMPARE(receiveHostEvent.count(), 1);
+    const auto arguments = receiveHostEvent.takeFirst();
+    QString nickname = arguments.at(0).toString();
+    QString event = arguments.at(1).toString();
+    QCOMPARE(nickname, expected_nickname);
+    QCOMPARE(event, expected_event);
+    QCOMPARE(qvariant_cast<QHostAddress>(arguments.at(2)), expected_sender);
 }

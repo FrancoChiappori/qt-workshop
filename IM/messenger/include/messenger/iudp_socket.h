@@ -17,7 +17,7 @@ public:
     virtual bool bind(quint16 port, QAbstractSocket::BindMode mode) = 0;
 
     virtual qint64 writeDatagram(QByteArray const & datagram, QHostAddress const & host, quint16 port) = 0;
-    virtual qint64 readDatagram(QByteArray & datagram) = 0;
+    virtual qint64 readDatagram(QByteArray & datagram, QHostAddress * address = 0) = 0;
 
     virtual QAbstractSocket const * get_QSocket() = 0;
 };

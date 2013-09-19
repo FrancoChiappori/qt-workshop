@@ -13,6 +13,7 @@ class Command {
 public:
     static quint32 const KeepAlive;
     static quint32 const Message;
+    static quint32 const HostEvent;
 };
 
 class Communication : public QObject
@@ -34,6 +35,8 @@ signals:
     void received_host_event(const QString & nickname, QString const & event, const QHostAddress & host);
 
 private:
+    void setup_datagram(QDataStream & stream, quint32 command, const QString & nickname);
+
     IUdpSocket & _udp_socket;
     quint16 _port;
 };

@@ -42,7 +42,7 @@ void ControllerTest::invoke_send_keepalive_sends_signal_send_keeplive()
     testee.invoke_send_keepalive();
 
     // assert
-    QCOMPARE(signal_spy.count(), 1);
+    QCOMPARE(signal_spy.count(), 2);
     const auto arguments = signal_spy.takeFirst();
     QCOMPARE(arguments.size(), 1);
     QCOMPARE(arguments.at(0).toString(), expected_nickname);

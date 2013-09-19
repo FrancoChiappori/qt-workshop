@@ -17,8 +17,6 @@ void Gui::on_SendMessage_clicked()
     if(!_im_form.MessageInput->text().isEmpty())
     {
         emit send_message(_im_form.MessageInput->text());
-
-        _im_form.Chat->addItem("Me: "+_im_form.MessageInput->text());
         _im_form.MessageInput->clear();
     }
 }

@@ -9,11 +9,13 @@ INCLUDEPATH += include
 
 SOURCES += \
     source/application-uic.cpp \
-    source/gui.cpp
+    source/gui.cpp \
+    source/UserListModel.cpp
 
 HEADERS += \
     include/application-uic/application-uic.h \
-    include/application-uic/gui.h
+    include/application-uic/gui.h \
+    include/application-uic/UserListModel.h
 
 FORMS += \
     im_form.ui

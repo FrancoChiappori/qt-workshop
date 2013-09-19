@@ -75,3 +75,28 @@ void CommunicationTest::handle_send_message_broadcasts_the_message_over_udp()
     QCOMPARE(arguments.at(2).toUInt(), expected_port);
 }
 
+void CommunicationTest::receiving_keep_alive_on_udp_emits_proper_signal()
+{
+    // arrange
+    QUdpSocketMock udp_socket;
+    IM::Communication testee(udp_socket);
+    const QString expected_nickname = "Legolas";
+
+    QByteArray data;
+    QDataStream stream(&data, QIODevice::WriteOnly);
+    stream.setVersion(QDataStream::Qt_5_0);
+    stream << IM::Command::KeepAlive;
+    stream << expected_nickname;
+    udp_socket.setDataToReceive(data);
+
+    QSignalSpy receiveKeepAlive(&testee, SIGNAL(received_keep_alive(const QString &)));
+
+    // act
+    testee.receive_incoming_datagram();
+
+    // assert
+    QCOMPARE(receiveKeepAlive.count(), 1);
+    const auto arguments = receiveKeepAlive.takeFirst();
+    QString nickname = arguments.at(0).toString();
+    QCOMPARE(nickname, expected_nickname);
+}

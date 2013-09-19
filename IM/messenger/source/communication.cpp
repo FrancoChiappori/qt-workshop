@@ -56,13 +56,13 @@ void Communication::receive_incoming_datagram()
 
     switch(command) {
         case Command::KeepAlive:
-            // TODO
+            emit received_keep_alive(nickname);
             break;
         case Command::Message:
             // TODO read out message and emit signal.
             break;
         }
-}
+    }
 
 } // IM
 

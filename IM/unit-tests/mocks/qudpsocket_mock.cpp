@@ -13,9 +13,13 @@ qint64 QUdpSocketMock::writeDatagram(QByteArray const & datagram, QHostAddress c
     return datagram.size();
 }
 
-qint64 QUdpSocketMock::readDatagram(QByteArray & datagram)
+qint64 QUdpSocketMock::readDatagram(QByteArray & datagram, QHostAddress *address)
 {
-    datagram = m_dataToReceive; return 0;
+    datagram = m_dataToReceive;
+    if (address) {
+        *address = m_receivedFrom;
+    }
+    return 0;
 }
 
 QAbstractSocket const * QUdpSocketMock::get_QSocket()
@@ -23,9 +27,12 @@ QAbstractSocket const * QUdpSocketMock::get_QSocket()
     return &m_dummySocket;
 }
 
-void QUdpSocketMock::setDataToReceive(QByteArray const & datagram)
+void QUdpSocketMock::setDataToReceive(QByteArray const & datagram, const QHostAddress * address)
 {
     m_dataToReceive = datagram;
+    if (address) {
+        m_receivedFrom = *address;
+    }
 }
 
 

@@ -43,7 +43,6 @@ int Application::execute(int argc, char * argv[])
     im_form.Participants->setModel(&model);
 
     // run
-
     gui.show();
     return application.exec();
 }

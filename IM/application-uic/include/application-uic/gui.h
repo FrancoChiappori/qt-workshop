@@ -12,7 +12,6 @@ class Gui : public QWidget {
 
 public:
     Gui(Ui::ImForm & form);
-    //QString getNickname();
 
 public slots:
     void on_addChatItem(const QString & nickname, QString const & message);
@@ -28,7 +27,6 @@ signals:
 
 private:
     Ui::ImForm & _im_form;
-
     QString m_nickname;
 };
 

@@ -19,7 +19,7 @@ Communication::Communication(IUdpSocket & udp_socket) :
             this, SLOT(receive_incoming_datagram()));
 }
 
-void Communication::handle_send_keep_alive(QString const & nickname)
+void Communication::handle_send_keep_alive(const QString & nickname)
 {
     QByteArray data;
     QDataStream stream(&data, QIODevice::WriteOnly);
@@ -42,6 +42,10 @@ void Communication::handle_send_message(const QString & nickname, const QString 
     stream << message;
 
     _udp_socket.writeDatagram(data, QHostAddress::Broadcast, _port);
+}
+
+void Communication::handle_send_host_event(const QString &, const QString &)
+{
 }
 
 void Communication::receive_incoming_datagram()

@@ -9,6 +9,7 @@ class UserTest : public QObject
 
 private slots:
     void setting_nickname();
+    void timeout();
 };
 
 #endif

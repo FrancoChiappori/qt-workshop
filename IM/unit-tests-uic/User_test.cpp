@@ -11,5 +11,22 @@ void UserTest::setting_nickname()
     IM::User user(expected_nickname);
 
     // assert
-    QCOMPARE(user.getNickname(), expected_nickname);
+    QCOMPARE(user.get_nickname(), expected_nickname);
+}
+
+void UserTest::timeout()
+{
+    // arrange
+    IM::User user("Foobar");
+    QDateTime t0 = QDateTime::currentDateTime();
+    QDateTime t1 = t0.addSecs(5);
+    QDateTime t2 = t0.addSecs(-5);
+
+    // act
+    user.keep_alive(t0);
+
+    // assert
+    QCOMPARE(user.is_expired(t0), false);
+    QCOMPARE(user.is_expired(t1), true);
+    QCOMPARE(user.is_expired(t2), false);
 }

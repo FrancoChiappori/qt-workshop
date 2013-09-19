@@ -55,14 +55,17 @@ void Communication::receive_incoming_datagram()
     stream >> command >> nickname;
 
     switch(command) {
-        case Command::KeepAlive:
-            emit received_keep_alive(nickname);
-            break;
-        case Command::Message:
-            // TODO read out message and emit signal.
-            break;
-        }
+    case Command::KeepAlive:
+        emit received_keep_alive(nickname);
+        break;
+    case Command::Message: {
+        QString message;
+        stream >> message;
+        emit received_message(nickname, message);
+        break;
     }
+    }
+}
 
 } // IM
 

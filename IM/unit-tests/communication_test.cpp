@@ -103,4 +103,30 @@ void CommunicationTest::receiving_keep_alive_on_udp_emits_proper_signal()
 
 void CommunicationTest::receiving_message_on_udp_emits_proper_signal()
 {
+    // arrange
+    QUdpSocketMock udp_socket;
+    IM::Communication testee(udp_socket);
+    const QString expected_nickname = "Legolas";
+    const QString expected_message = "To the sea!";
+
+    QByteArray data;
+    QDataStream stream(&data, QIODevice::WriteOnly);
+    stream.setVersion(QDataStream::Qt_5_0);
+    stream << IM::Command::Message;
+    stream << expected_nickname;
+    stream << expected_message;
+    udp_socket.setDataToReceive(data);
+
+    QSignalSpy receiveMessage(&testee, SIGNAL(received_message(const QString &, QString const &)));
+
+    // act
+    testee.receive_incoming_datagram();
+
+    // assert
+    QCOMPARE(receiveMessage.count(), 1);
+    const auto arguments = receiveMessage.takeFirst();
+    QString nickname = arguments.at(0).toString();
+    QString message = arguments.at(1).toString();
+    QCOMPARE(nickname, expected_nickname);
+    QCOMPARE(message, expected_message);
 }

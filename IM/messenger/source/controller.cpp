@@ -36,5 +36,10 @@ void Controller::set_nickname(const QString & nickname)
     invoke_send_keepalive();
 }
 
+void Controller::invoke_send_event(const QString & event)
+{
+    emit send_event(_nickname, event);
+}
+
 } // IM
 

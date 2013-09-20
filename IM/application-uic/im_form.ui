@@ -13,9 +13,6 @@
   <property name="windowTitle">
    <string>Töggeli APP</string>
   </property>
-  <property name="autoFillBackground">
-   <bool>false</bool>
-  </property>
   <widget class="QWidget" name="horizontalLayoutWidget">
    <property name="geometry">
     <rect>

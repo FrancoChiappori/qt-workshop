@@ -4,9 +4,10 @@
 
 namespace IM {
 
-Gui::Gui(Ui::ImForm & im_form) :
-    QWidget(nullptr),
-    _im_form(im_form)
+Gui::Gui(Ui::ImForm & im_form)
+    : QWidget(nullptr)
+    , _im_form(im_form)
+    , m_nickname("")
 {
     _im_form.setupUi(this);
     _im_form.Chat->setAutoScroll(true);

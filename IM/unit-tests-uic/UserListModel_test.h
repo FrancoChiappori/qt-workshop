@@ -14,6 +14,8 @@ private slots:
     void received_keepalive_with_empty_nickname();
     void received_keepalive_with_new_nickname();
     void received_keepalive_with_existing_nickname();
+    void check_user_timeout_not_expired();
+    void check_user_timeout_expired();
 };
 
 #endif

@@ -67,6 +67,15 @@ void Communication::handle_send_join_event(const QString & nickname, const QStri
     _udp_socket.writeDatagram(data, QHostAddress::Broadcast, _port);
 }
 
+void Communication::handle_call_out_event(const QString & nickname, const QString & event)
+{
+    QByteArray data;
+    QDataStream stream(&data, QIODevice::WriteOnly);
+
+    setup_datagram(stream, Command::HostEvent, nickname);
+    stream << event;
+}
+
 void Communication::receive_incoming_datagram()
 {
     QByteArray data;

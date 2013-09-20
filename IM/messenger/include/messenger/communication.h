@@ -29,6 +29,7 @@ public slots:
     void handle_send_host_event(const QString & nickname, const QString & event);
     void handle_send_join_event(const QString & nickname, const QString & event,
                                 const QString & hostName, const QHostAddress & host);
+    void handle_call_out_event(const QString & nickname, const QString & event);
 
     void receive_incoming_datagram();
 
@@ -37,6 +38,7 @@ signals:
     void received_message(const QString & nickname, const QString  & message);
     void received_host_event(const QString & nickname, QString const & event, const QHostAddress & host);
     void received_join_event(const QString & nickname, QString const & event, const QString & hostName);
+    void received_call_out_event(const QString & nickname, QString const & event);
 
 private:
     void setup_datagram(QDataStream & stream, quint32 command, const QString & nickname);

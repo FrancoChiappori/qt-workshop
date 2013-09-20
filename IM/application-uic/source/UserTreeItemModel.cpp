@@ -10,15 +10,18 @@ UserTreeItemModel::UserTreeItemModel(QObject * parent)
     : QAbstractItemModel(parent)
     , timer(nullptr)
 {
+    beginInsertColumns(QModelIndex(), noOfColumns, noOfColumns);
+    endInsertColumns();
+}
+
+
+void UserTreeItemModel::setup_timer()
+{
     timer = new QTimer(this);
     connect(timer, SIGNAL(timeout()), this, SLOT(check_user_timeout()));
     timer->setSingleShot(false);
     timer->setTimerType(Qt::PreciseTimer);
     timer->start(1000);
-    beginInsertColumns(QModelIndex(), noOfColumns, noOfColumns);
-    endInsertColumns();
-
-
 }
 
 int UserTreeItemModel::rowCount(const QModelIndex & parent) const

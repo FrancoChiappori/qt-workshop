@@ -21,6 +21,8 @@ public:
     QModelIndex index(int row, int column, const QModelIndex &parent = QModelIndex()) const;
     QModelIndex parent(const QModelIndex &child) const;
 
+    void setup_timer();
+
 public slots:
     void received_keep_alive(const QString & nickname);
     void check_user_timeout();

@@ -40,13 +40,13 @@ int Application::execute(int argc, char * argv[])
     gui.connect(&communication, SIGNAL(received_message(QString const &, QString const &)), SLOT(new_chat_message(QString const &, QString const &)));
 
     // model
-
     UserListModel listModel(&gui);
     listModel.setup_timer();
     listModel.connect(&communication, SIGNAL(received_keep_alive(const QString &)), SLOT(received_keep_alive(const QString &)));
     im_form.Participants->setModel(&listModel);
 
     UserTreeItemModel treeItemModel(&gui);
+    treeItemModel.setup_timer();
     treeItemModel.connect(&communication, SIGNAL(received_keep_alive(const QString &)), SLOT(received_keep_alive(const QString &)));
     im_form.EventTree->setModel(&treeItemModel);
 

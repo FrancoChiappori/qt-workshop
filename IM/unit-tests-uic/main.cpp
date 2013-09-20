@@ -3,6 +3,7 @@
 
 #include "gui_test.h"
 #include "User_test.h"
+#include "UserListModel_test.h"
 
 template<typename Test>
 void execute_test(int & exit_code, int argc, char * argv[])
@@ -21,6 +22,7 @@ int main(int argc, char * argv[])
 
     execute_test<GuiTest>(exit_code, argc, argv);
     execute_test<UserTest>(exit_code, argc, argv);
+    execute_test<UserListModelTest>(exit_code, argc, argv);
 
     return exit_code;
 }

@@ -7,6 +7,12 @@ namespace IM {
 UserListModel::UserListModel(QObject * parent)
     : QAbstractListModel(parent)
     , timer(nullptr)
+{}
+
+UserListModel::~UserListModel()
+{}
+
+void UserListModel::setup_timer()
 {
     timer = new QTimer(this);
     connect(timer, SIGNAL(timeout()), this, SLOT(check_user_timeout()));
@@ -44,6 +50,11 @@ QVariant UserListModel::data(const QModelIndex & index, int role) const
     return QVariant();
 }
 
+int UserListModel::get_user_count() const
+{
+    return static_cast<int>(users.size());
+}
+
 void UserListModel::received_keep_alive(const QString & nickname)
 {
     using namespace std;
@@ -57,12 +68,25 @@ void UserListModel::received_keep_alive(const QString & nickname)
     });
 
     if (i == end(users)) {
-        beginInsertRows(QModelIndex(), users.size()-1, users.size());
-        users.push_back(User(nickname));
-        endInsertRows();
+        add_new_user(nickname);
     } else {
         i->keep_alive();
     }
+}
+
+void UserListModel::add_new_user(const QString & nickname)
+{
+    int start = get_insert_row();
+    beginInsertRows(QModelIndex(), start, start + 1);
+    users.push_back(User(nickname));
+    endInsertRows();
+}
+
+int UserListModel::get_insert_row() const
+{
+    return users.empty()
+        ? 0
+        : get_user_count() - 1;
 }
 
 void UserListModel::check_user_timeout()

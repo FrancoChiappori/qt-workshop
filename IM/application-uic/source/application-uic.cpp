@@ -41,22 +41,15 @@ int Application::execute(int argc, char * argv[])
 
     // model
 
-<<<<<<< HEAD
     UserListModel listModel(&gui);
+    listModel.setup_timer();
     listModel.connect(&communication, SIGNAL(received_keep_alive(const QString &)), SLOT(received_keep_alive(const QString &)));
     im_form.Participants->setModel(&listModel);
 
     UserTreeItemModel treeItemModel(&gui);
     treeItemModel.connect(&communication, SIGNAL(received_keep_alive(const QString &)), SLOT(received_keep_alive(const QString &)));
-
     im_form.EventTree->setModel(&treeItemModel);
-=======
-    UserListModel model(&gui);
-    model.setup_timer();
-    model.connect(&communication, SIGNAL(received_keep_alive(const QString &)), SLOT(received_keep_alive(const QString &)));
-    im_form.Participants->setModel(&model);
-    im_form.EventTree->setModel(&model);
->>>>>>> 6728c109b701abd7d6d81b2ff0d6fd0821571d93
+
     // run
     gui.show();
     return application.exec();

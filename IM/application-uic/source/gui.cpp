@@ -32,7 +32,7 @@ void Gui::on_MessageInput_returnPressed()
   on_SendMessage_clicked();
 }
 
-void Gui::on_addChatItem(const QString & nickname, QString const & message)
+void Gui::new_chat_message(const QString & nickname, QString const & message)
 {
   _im_form.Chat->addItem(nickname + ": " + message);
 }

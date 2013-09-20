@@ -34,7 +34,7 @@ int Application::execute(int argc, char * argv[])
     Gui gui(im_form);
     controller.connect(&gui, SIGNAL(send_message(QString const &)), SLOT(invoke_send_message(QString const &)));
     controller.connect(&gui, SIGNAL(notify_nickname(QString const &)), SLOT(set_nickname(QString const &)));
-    gui.connect(&communication, SIGNAL(received_message(QString const &, QString const &)), SLOT(on_addChatItem(QString const &, QString const &)));
+    gui.connect(&communication, SIGNAL(received_message(QString const &, QString const &)), SLOT(new_chat_message(QString const &, QString const &)));
 
     // model
 

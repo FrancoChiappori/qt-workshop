@@ -14,7 +14,7 @@ public:
     Gui(Ui::ImForm & form);
 
 public slots:
-    void on_addChatItem(const QString & nickname, QString const & message);
+    void new_chat_message(const QString & nickname, QString const & message);
 
 private slots:
     void on_SendMessage_clicked();

@@ -39,6 +39,7 @@ int Application::execute(int argc, char * argv[])
     // model
 
     UserListModel model(&gui);
+    model.setup_timer();
     model.connect(&communication, SIGNAL(received_keep_alive(const QString &)), SLOT(received_keep_alive(const QString &)));
     im_form.Participants->setModel(&model);
     im_form.EventTree->setModel(&model);

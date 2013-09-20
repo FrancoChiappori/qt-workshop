@@ -8,11 +8,13 @@ CONFIG -= app_bundle
 SOURCES += \
     main.cpp \
     gui_test.cpp \
-    User_test.cpp
+    User_test.cpp \
+    UserListModel_test.cpp
 
 HEADERS += \
     gui_test.h \
-    User_test.h
+    User_test.h \
+    UserListModel_test.h
 
 include(../common.pri)
 include(../application-uic/application-uic.pri)

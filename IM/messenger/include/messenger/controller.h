@@ -15,12 +15,14 @@ public:
 
 public slots:
     void invoke_send_message(const QString & message);
+    void invoke_send_event(const QString & event);
     void invoke_send_keepalive();
     void set_nickname(const QString & nickname);
 
 signals:
     void send_message(const QString & nickname, QString const & message);
     void send_keepalive(QString const &);
+    void send_event(const QString & nickname, QString const & event);
 
 private:
     void setupTimer();

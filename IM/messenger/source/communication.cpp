@@ -11,6 +11,7 @@ quint32 const Command::KeepAlive = 0;
 quint32 const Command::Message = 1;
 quint32 const Command::HostEvent = 2;
 quint32 const Command::JoinEvent = 3;
+quint32 const Command::CallOutEvent = 4;
 
 Communication::Communication(IUdpSocket & udp_socket) :
     _udp_socket(udp_socket),
@@ -72,8 +73,10 @@ void Communication::handle_call_out_event(const QString & nickname, const QStrin
     QByteArray data;
     QDataStream stream(&data, QIODevice::WriteOnly);
 
-    setup_datagram(stream, Command::HostEvent, nickname);
+    setup_datagram(stream, Command::CallOutEvent, nickname);
     stream << event;
+
+    _udp_socket.writeDatagram(data, QHostAddress::Broadcast, _port);
 }
 
 void Communication::receive_incoming_datagram()
@@ -108,6 +111,12 @@ void Communication::receive_incoming_datagram()
         QString hostname;
         stream >> event >> hostname;
         emit received_join_event(nickname, event, hostname);
+        break;
+    }
+    case Command::CallOutEvent: {
+        QString event;
+        stream >> event;
+        emit received_call_out_event(nickname, event);
         break;
     }
     }

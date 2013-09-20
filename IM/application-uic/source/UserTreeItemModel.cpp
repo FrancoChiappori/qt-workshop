@@ -1,18 +1,21 @@
-#include "application-uic/UserListModel.h"
+#include "application-uic/UserTreeItemModel.h"
 #include <algorithm>
 #include <QTimer>
 
+const int noOfColumns = 1;
+
 namespace IM {
 
-UserListModel::UserListModel(QObject * parent)
-    : QAbstractListModel(parent)
+UserTreeItemModel::UserTreeItemModel(QObject * parent)
+    : QAbstractItemModel(parent)
     , timer(nullptr)
-{}
+{
+    beginInsertColumns(QModelIndex(), noOfColumns, noOfColumns);
+    endInsertColumns();
+}
 
-UserListModel::~UserListModel()
-{}
 
-void UserListModel::setup_timer()
+void UserTreeItemModel::setup_timer()
 {
     timer = new QTimer(this);
     connect(timer, SIGNAL(timeout()), this, SLOT(check_user_timeout()));
@@ -21,14 +24,21 @@ void UserListModel::setup_timer()
     timer->start(1000);
 }
 
-int UserListModel::rowCount(const QModelIndex & parent) const
+int UserTreeItemModel::rowCount(const QModelIndex & parent) const
 {
     Q_UNUSED(parent);
 
     return users.size();
 }
 
-QVariant UserListModel::data(const QModelIndex & index, int role) const
+int UserTreeItemModel::columnCount(const QModelIndex & parent) const
+{
+    Q_UNUSED(parent);
+
+    return noOfColumns;
+}
+
+QVariant UserTreeItemModel::data(const QModelIndex & index, int role) const
 {
     if (!index.isValid())
         return QVariant();
@@ -50,12 +60,7 @@ QVariant UserListModel::data(const QModelIndex & index, int role) const
     return QVariant();
 }
 
-int UserListModel::get_user_count() const
-{
-    return static_cast<int>(users.size());
-}
-
-void UserListModel::received_keep_alive(const QString & nickname)
+void UserTreeItemModel::received_keep_alive(const QString & nickname)
 {
     using namespace std;
 
@@ -68,30 +73,19 @@ void UserListModel::received_keep_alive(const QString & nickname)
     });
 
     if (i == end(users)) {
-        add_new_user(nickname);
+        beginInsertRows(QModelIndex(), users.size()-1, users.size());
+        users.push_back(User(nickname));
+        endInsertRows();
     } else {
         i->keep_alive();
     }
 }
 
-void UserListModel::add_new_user(const QString & nickname)
-{
-    int start = get_insert_row();
-    beginInsertRows(QModelIndex(), start, start + 1);
-    users.push_back(User(nickname));
-    endInsertRows();
-}
-
-int UserListModel::get_insert_row() const
-{
-    return users.empty()
-        ? 0
-        : get_user_count() - 1;
-}
-
-void UserListModel::check_user_timeout_specified(const QDateTime & now)
+void UserTreeItemModel::check_user_timeout()
 {
     using namespace std;
+
+    QDateTime now = QDateTime::currentDateTime().addSecs(-7);
 
     for (;;) {
         auto i = find_if(begin(users), end(users), [now](const User & user)
@@ -107,9 +101,21 @@ void UserListModel::check_user_timeout_specified(const QDateTime & now)
     }
 }
 
-void UserListModel::check_user_timeout()
+QModelIndex UserTreeItemModel::index(int row, int column, const QModelIndex &parent) const
 {
-    check_user_timeout_specified(QDateTime::currentDateTime().addSecs(-7));
+    Q_UNUSED(parent);
+    Q_UNUSED(row);
+    Q_UNUSED(column);
+    QModelIndex index;
+    return index;
 }
+
+QModelIndex UserTreeItemModel::parent(const QModelIndex &child) const
+{
+    Q_UNUSED(child);
+    QModelIndex index;
+    return index;
+}
+
 
 }

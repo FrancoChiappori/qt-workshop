@@ -9,6 +9,7 @@
 #include "application-uic/gui.h"
 #include "application-uic/application-uic.h"
 #include "application-uic/UserListModel.h"
+#include "application-uic/UserTreeItemModel.h"
 
 namespace IM {
 
@@ -39,12 +40,16 @@ int Application::execute(int argc, char * argv[])
     gui.connect(&communication, SIGNAL(received_message(QString const &, QString const &)), SLOT(new_chat_message(QString const &, QString const &)));
 
     // model
+    UserListModel listModel(&gui);
+    listModel.setup_timer();
+    listModel.connect(&communication, SIGNAL(received_keep_alive(const QString &)), SLOT(received_keep_alive(const QString &)));
+    im_form.Participants->setModel(&listModel);
 
-    UserListModel model(&gui);
-    model.setup_timer();
-    model.connect(&communication, SIGNAL(received_keep_alive(const QString &)), SLOT(received_keep_alive(const QString &)));
-    im_form.Participants->setModel(&model);
-    im_form.EventTree->setModel(&model);
+    UserTreeItemModel treeItemModel(&gui);
+    treeItemModel.setup_timer();
+    treeItemModel.connect(&communication, SIGNAL(received_keep_alive(const QString &)), SLOT(received_keep_alive(const QString &)));
+    im_form.EventTree->setModel(&treeItemModel);
+
     // run
     gui.show();
     return application.exec();

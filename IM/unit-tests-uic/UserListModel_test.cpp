@@ -1,4 +1,5 @@
 #include <QtTest/QTest>
+#include <QThread>
 
 #include <application-uic/UserListModel.h>
 
@@ -41,6 +42,7 @@ void UserListModelTest::insertion_row_with_one_entry()
 
     model.add_new_user("test");
 
+    QCOMPARE(model.get_user_count(), 1);
     QCOMPARE(model.get_insert_row(), 0);
 }
 
@@ -53,5 +55,69 @@ void UserListModelTest::insertion_row_with_many_entries()
     model.add_new_user("test2");
     model.add_new_user("test3");
 
+    QCOMPARE(model.get_user_count(), 4);
     QCOMPARE(model.get_insert_row(), 3);
 }
+
+void UserListModelTest::received_keepalive_with_empty_nickname()
+{
+    ::IM_test::UserListModelTestee model;
+
+    QCOMPARE(model.get_user_count(), 0);
+
+    model.received_keep_alive("");
+
+    QCOMPARE(model.get_user_count(), 0);
+}
+
+void UserListModelTest::received_keepalive_with_new_nickname()
+{
+    ::IM_test::UserListModelTestee model;
+
+    QCOMPARE(model.get_user_count(), 0);
+
+    model.received_keep_alive("user0");
+
+    QCOMPARE(model.get_user_count(), 1);
+}
+
+void UserListModelTest::received_keepalive_with_existing_nickname()
+{
+    ::IM_test::UserListModelTestee model;
+
+    QCOMPARE(model.get_user_count(), 0);
+
+    model.received_keep_alive("user0");
+
+    QCOMPARE(model.get_user_count(), 1);
+
+    model.received_keep_alive("user0");
+
+    QCOMPARE(model.get_user_count(), 1);
+}
+
+void UserListModelTest::check_user_timeout_not_expired()
+{
+    ::IM_test::UserListModelTestee model;
+    model.received_keep_alive("user0");
+
+    QCOMPARE(model.get_user_count(), 1);
+
+    model.check_user_timeout();
+
+    QCOMPARE(model.get_user_count(), 1);
+}
+
+void UserListModelTest::check_user_timeout_expired()
+{
+    ::IM_test::UserListModelTestee model;
+    model.received_keep_alive("user0");
+
+    QCOMPARE(model.get_user_count(), 1);
+
+    QThread::usleep(100000);
+    model.check_user_timeout_specified(QDateTime::currentDateTime().addMSecs(1));
+
+    QCOMPARE(model.get_user_count(), 0);
+}
+

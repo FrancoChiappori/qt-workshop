@@ -89,11 +89,9 @@ int UserListModel::get_insert_row() const
         : get_user_count() - 1;
 }
 
-void UserListModel::check_user_timeout()
+void UserListModel::check_user_timeout_specified(const QDateTime & now)
 {
     using namespace std;
-
-    QDateTime now = QDateTime::currentDateTime().addSecs(-7);
 
     for (;;) {
         auto i = find_if(begin(users), end(users), [now](const User & user)
@@ -107,6 +105,11 @@ void UserListModel::check_user_timeout()
         users.erase(i);
         endRemoveRows();
     }
+}
+
+void UserListModel::check_user_timeout()
+{
+    check_user_timeout_specified(QDateTime::currentDateTime().addSecs(-7));
 }
 
 }

@@ -1,4 +1,5 @@
 #include <QtTest/QTest>
+#include <QThread>
 
 #include <application-uic/UserListModel.h>
 
@@ -94,3 +95,29 @@ void UserListModelTest::received_keepalive_with_existing_nickname()
 
     QCOMPARE(model.get_user_count(), 1);
 }
+
+void UserListModelTest::check_user_timeout_not_expired()
+{
+    ::IM_test::UserListModelTestee model;
+    model.received_keep_alive("user0");
+
+    QCOMPARE(model.get_user_count(), 1);
+
+    model.check_user_timeout();
+
+    QCOMPARE(model.get_user_count(), 1);
+}
+
+void UserListModelTest::check_user_timeout_expired()
+{
+    ::IM_test::UserListModelTestee model;
+    model.received_keep_alive("user0");
+
+    QCOMPARE(model.get_user_count(), 1);
+
+    QThread::usleep(100000);
+    model.check_user_timeout_specified(QDateTime::currentDateTime().addMSecs(1));
+
+    QCOMPARE(model.get_user_count(), 0);
+}
+

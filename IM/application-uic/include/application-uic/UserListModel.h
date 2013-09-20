@@ -22,6 +22,8 @@ public:
     QVariant data(const QModelIndex & index, int role = Qt::DisplayRole) const;
     int get_user_count() const;
 
+    void check_user_timeout_specified(const QDateTime &);
+
 public slots:
     void received_keep_alive(const QString & nickname);
     void check_user_timeout();

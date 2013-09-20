@@ -14,6 +14,7 @@ public:
     static quint32 const KeepAlive;
     static quint32 const Message;
     static quint32 const HostEvent;
+    static quint32 const JoinEvent;
 };
 
 class Communication : public QObject

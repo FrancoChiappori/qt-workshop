@@ -10,6 +10,7 @@ namespace IM {
 quint32 const Command::KeepAlive = 0;
 quint32 const Command::Message = 1;
 quint32 const Command::HostEvent = 2;
+quint32 const Command::JoinEvent = 3;
 
 Communication::Communication(IUdpSocket & udp_socket) :
     _udp_socket(udp_socket),
@@ -58,10 +59,12 @@ void Communication::handle_send_join_event(const QString & nickname, const QStri
     QByteArray data;
     QDataStream stream(&data, QIODevice::WriteOnly);
 
-    setup_datagram(stream, Command::HostEvent, nickname);
+    setup_datagram(stream, Command::JoinEvent, nickname);
     stream << event;
     stream << hostName;
     stream << host.toString();
+
+    _udp_socket.writeDatagram(data, QHostAddress::Broadcast, _port);
 }
 
 void Communication::receive_incoming_datagram()
@@ -89,6 +92,13 @@ void Communication::receive_incoming_datagram()
         QString event;
         stream >> event;
         emit received_host_event(nickname, event, sender);
+        break;
+    }
+    case Command::JoinEvent: {
+        QString event;
+        QString hostname;
+        stream >> event >> hostname;
+        emit received_join_event(nickname, event, hostname);
         break;
     }
     }

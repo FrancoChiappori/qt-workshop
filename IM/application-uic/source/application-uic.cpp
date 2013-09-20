@@ -41,7 +41,7 @@ int Application::execute(int argc, char * argv[])
     UserListModel model(&gui);
     model.connect(&communication, SIGNAL(received_keep_alive(const QString &)), SLOT(received_keep_alive(const QString &)));
     im_form.Participants->setModel(&model);
-
+    im_form.EventTree->setModel(&model);
     // run
     gui.show();
     return application.exec();

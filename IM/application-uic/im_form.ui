@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>733</width>
+    <width>731</width>
     <height>558</height>
    </rect>
   </property>
@@ -55,7 +55,7 @@
     <rect>
      <x>10</x>
      <y>30</y>
-     <width>241</width>
+     <width>251</width>
      <height>41</height>
     </rect>
    </property>
@@ -86,7 +86,7 @@
     <rect>
      <x>10</x>
      <y>80</y>
-     <width>241</width>
+     <width>251</width>
      <height>131</height>
     </rect>
    </property>
@@ -141,20 +141,20 @@
     </item>
    </layout>
   </widget>
-  <widget class="QWidget" name="verticalLayoutWidget_3">
+  <widget class="QWidget" name="verticalLayoutWidget_4">
    <property name="geometry">
     <rect>
      <x>10</x>
      <y>220</y>
-     <width>241</width>
+     <width>251</width>
      <height>261</height>
     </rect>
    </property>
-   <layout class="QVBoxLayout" name="verticalLayout_3">
+   <layout class="QVBoxLayout" name="verticalLayout_5">
     <item>
-     <layout class="QHBoxLayout" name="horizontalLayout_4">
+     <layout class="QHBoxLayout" name="horizontalLayout_5">
       <item>
-       <widget class="QLabel" name="EventsLabel">
+       <widget class="QLabel" name="EventLabel">
         <property name="font">
          <font>
           <pointsize>10</pointsize>
@@ -166,7 +166,7 @@
        </widget>
       </item>
       <item>
-       <widget class="QLineEdit" name="Event"/>
+       <widget class="QLineEdit" name="EventInput"/>
       </item>
       <item>
        <widget class="QPushButton" name="AddEvent">
@@ -178,45 +178,9 @@
      </layout>
     </item>
     <item>
-     <layout class="QVBoxLayout" name="verticalLayout_4">
+     <layout class="QVBoxLayout" name="verticalLayout_6">
       <item>
-       <widget class="QTreeWidget" name="treeWidget">
-        <column>
-         <property name="text">
-          <string>Participant</string>
-         </property>
-        </column>
-        <item>
-         <property name="text">
-          <string>Mario</string>
-         </property>
-         <item>
-          <property name="text">
-           <string>Töggelä</string>
-          </property>
-         </item>
-        </item>
-        <item>
-         <property name="text">
-          <string>Franco</string>
-         </property>
-        </item>
-        <item>
-         <property name="text">
-          <string>Alain</string>
-         </property>
-         <item>
-          <property name="text">
-           <string>qt Workshop</string>
-          </property>
-         </item>
-         <item>
-          <property name="text">
-           <string>Bier</string>
-          </property>
-         </item>
-        </item>
-       </widget>
+       <widget class="QTreeView" name="EventTree"/>
       </item>
      </layout>
     </item>

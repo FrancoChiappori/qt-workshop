@@ -48,6 +48,23 @@ void GuiTest::clicking_the_SendMessage_does_not_signal_send_message_when_the_inp
     QCOMPARE(signal_spy.count(), 0);
 }
 
+void GuiTest::clicking_the_SendMessage_does_not_signal_send_message_when_no_nickname_set()
+{
+    // arrange
+    Ui::ImForm im_form;
+    IM::Gui testee(im_form);
+
+    QSignalSpy signal_spy(&testee, SIGNAL(send_message(QString const &)));
+
+    im_form.Nickname->clear();
+
+    // act
+    QTest::mouseClick(im_form.SendMessage, Qt::LeftButton);
+
+    // assert
+    QCOMPARE(signal_spy.count(), 0);
+}
+
 void GuiTest::clicking_the_SendMessage_clears_the_input_field_is_empty()
 {
     // arrange
@@ -108,6 +125,110 @@ void GuiTest::entering_the_Nickname()
     QTest::keyPress(im_form.Nickname, Qt::Key_Enter);
     QTest::keyRelease(im_form.Nickname, Qt::Key_Enter);
 
+    // assert
+    QCOMPARE(signal_spy.count(), 1);
+
+    const auto arguments = signal_spy.takeFirst();
+    QCOMPARE(arguments.size(), 1);
+    QCOMPARE(arguments.at(0).toString(), expected_message);
+}
+
+void GuiTest::clicking_the_AddEvent_signals_send_event_with_the_event_from_the_input_field()
+{
+    // arrange
+    Ui::ImForm im_form;
+    IM::Gui testee(im_form);
+
+    QSignalSpy signal_spy(&testee, SIGNAL(send_event(QString const &)));
+
+    QString const expected_message = "Hello Event.";
+    im_form.EventInput->setText(expected_message);
+    im_form.Nickname->setText("Nickname");
+    QTest::keyPress(im_form.Nickname, Qt::Key_Enter);
+    QTest::keyRelease(im_form.Nickname, Qt::Key_Enter);
+
+    // act
+    QTest::mouseClick(im_form.AddEvent, Qt::LeftButton);
+
+    // assert
+    QCOMPARE(signal_spy.count(), 1);
+
+    const auto arguments = signal_spy.takeFirst();
+    QCOMPARE(arguments.size(), 1);
+    QCOMPARE(arguments.at(0).toString(), expected_message);
+}
+
+void GuiTest::clicking_the_AddEvent_does_not_signal_send_event_when_the_input_field_is_empty()
+{
+    // arrange
+    Ui::ImForm im_form;
+    IM::Gui testee(im_form);
+
+    QSignalSpy signal_spy(&testee, SIGNAL(send_event(QString const &)));
+
+    im_form.EventInput->clear();
+
+    // act
+    QTest::mouseClick(im_form.AddEvent, Qt::LeftButton);
+
+    // assert
+    QCOMPARE(signal_spy.count(), 0);
+}
+
+void GuiTest::clicking_the_AddEvent_does_not_signal_send_event_when_no_nickname_set()
+{
+    // arrange
+    Ui::ImForm im_form;
+    IM::Gui testee(im_form);
+
+    QSignalSpy signal_spy(&testee, SIGNAL(send_event(QString const &)));
+
+    im_form.Nickname->clear();
+
+    // act
+    QTest::mouseClick(im_form.AddEvent, Qt::LeftButton);
+
+    // assert
+    QCOMPARE(signal_spy.count(), 0);
+}
+
+void GuiTest::clicking_the_AddEvent_clears_the_input_field_is_empty()
+{
+    // arrange
+    Ui::ImForm im_form;
+    IM::Gui testee(im_form);
+
+    QSignalSpy signal_spy(&testee, SIGNAL(send_event(QString const &)));
+
+    QString const expected_message = "Hello Event.";
+    im_form.EventInput->setText(expected_message);
+    im_form.Nickname->setText("Nickname");
+    QTest::keyPress(im_form.Nickname, Qt::Key_Enter);
+    QTest::keyRelease(im_form.Nickname, Qt::Key_Enter);
+
+    // act
+    QTest::mouseClick(im_form.AddEvent, Qt::LeftButton);
+    // assert
+    QVERIFY(im_form.EventInput->text().isEmpty());
+}
+
+void GuiTest::entering_the_AddEvent_signals_send_event_with_the_event_from_the_input_field()
+{
+    // arrange
+    Ui::ImForm im_form;
+    IM::Gui testee(im_form);
+
+    QSignalSpy signal_spy(&testee, SIGNAL(send_event(QString const &)));
+
+    QString const expected_message = "Hello Event.";
+    im_form.EventInput->setText(expected_message);
+    im_form.Nickname->setText("Nickname");
+    QTest::keyPress(im_form.Nickname, Qt::Key_Enter);
+    QTest::keyRelease(im_form.Nickname, Qt::Key_Enter);
+
+    // act
+    QTest::keyPress(im_form.EventInput, Qt::Key_Enter);
+    QTest::keyRelease(im_form.EventInput, Qt::Key_Enter);
     // assert
     QCOMPARE(signal_spy.count(), 1);
 

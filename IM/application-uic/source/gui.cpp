@@ -37,6 +37,20 @@ void Gui::on_addChatItem(const QString & nickname, QString const & message)
   _im_form.Chat->addItem(nickname + ": " + message);
 }
 
+void Gui::on_AddEvent_clicked()
+{
+    if(!_im_form.EventInput->text().isEmpty() && !m_nickname.isEmpty())
+    {
+        emit send_event(_im_form.EventInput->text());
+        _im_form.EventInput->clear();
+    }
+}
+
+void Gui::on_EventInput_returnPressed()
+{
+    on_AddEvent_clicked();
+}
+
 
 } // IM
 

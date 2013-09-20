@@ -50,6 +50,11 @@ QVariant UserListModel::data(const QModelIndex & index, int role) const
     return QVariant();
 }
 
+int UserListModel::get_user_count() const
+{
+    return static_cast<int>(users.size());
+}
+
 void UserListModel::received_keep_alive(const QString & nickname)
 {
     using namespace std;
@@ -81,7 +86,7 @@ int UserListModel::get_insert_row() const
 {
     return users.empty()
         ? 0
-        : static_cast<int>(users.size()) - 1;
+        : get_user_count() - 1;
 }
 
 void UserListModel::check_user_timeout()

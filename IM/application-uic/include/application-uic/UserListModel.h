@@ -20,6 +20,7 @@ public:
     void setup_timer();
     int rowCount(const QModelIndex & parent = QModelIndex()) const;
     QVariant data(const QModelIndex & index, int role = Qt::DisplayRole) const;
+    int get_user_count() const;
 
 public slots:
     void received_keep_alive(const QString & nickname);
